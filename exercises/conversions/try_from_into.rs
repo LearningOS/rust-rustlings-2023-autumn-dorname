@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,19 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r,g,b) = tuple;
+        fn check_legal(x:i16)->bool{
+            return x > 0 && x < 255;
+        }
+        if check_legal(r)||check_legal(g)||check_legal(b){
+            return Ok(Color{
+                red:r as u8,
+                green:g as u8,
+                blue:b as u8
+            });
+        }else{
+            return Err(IntoColorError::IntConversion);
+        }
     }
 }
 
@@ -48,6 +60,19 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let (r,g,b) = (arr[0],arr[1],arr[2]);
+        fn check_legal(x:i16)->bool{
+            return x > 0 && x < 255;
+        }
+        if check_legal(r)||check_legal(g)||check_legal(b){
+            return Ok(Color{
+                red:r as u8,
+                green:g as u8,
+                blue:b as u8
+            });
+        }else{
+            return Err(IntoColorError::IntConversion);
+        }
     }
 }
 
@@ -55,6 +80,22 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3{
+            return Err(IntoColorError::BadLen);
+        }
+        let (r,g,b) = (slice[0],slice[1],slice[2]);
+        fn check_legal(x:i16)->bool{
+            return x > 0 && x < 255;
+        }
+        if check_legal(r)||check_legal(g)||check_legal(b){
+            return Ok(Color{
+                red:r as u8,
+                green:g as u8,
+                blue:b as u8
+            });
+        }else{
+            return Err(IntoColorError::IntConversion);
+        }
     }
 }
 
